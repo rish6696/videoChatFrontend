@@ -32,6 +32,15 @@
   content: "";
 }
 
+#watchVideoBtn:hover{
+  color: black !important;
+}
+
+
+#signUp ,#signUp:hover,#signUp:visited,#signUp:active{
+  background-color: #5FB49B !important;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
