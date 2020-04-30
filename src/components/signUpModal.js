@@ -3,9 +3,11 @@ import { Modal, Button, Container, Row, Col, Form } from 'react-bootstrap'
 import '../components/style.css'
 
 function SignUpModal(props) {
+    const { onHide,show,loginfromsignUp  } = props;
     return (
         <Modal
-            {...props}
+            onHide={onHide}
+            show={show}
             aria-labelledby="contained-modal-title-vcenter"
             dialogClassName="modal-30w"
             centered
@@ -50,7 +52,7 @@ function SignUpModal(props) {
                 <Container>
                     <Row className='justify-content-center' >
                         <Col style={{textAlign:'center'}} >
-                         <span style={{fontSize:'13px'}} > Already have an account? <a  onClick={props.loginfromSignUp} href='##' > Log In </a> </span>
+                         <span style={{fontSize:'13px'}} > Already have an account? <a  onClick={loginfromsignUp} href='##' > Log In </a> </span>
                         </Col>
                     </Row>
                 </Container>
@@ -58,6 +60,5 @@ function SignUpModal(props) {
         </Modal>
     );
 }
-
 
 export default SignUpModal;

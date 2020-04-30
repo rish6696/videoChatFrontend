@@ -4,10 +4,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/App.css'
 import LogInModal from './components/loginModal'
 import SignUpModal from './components/signUpModal'
+import ForgotPasswordModal from './components/forgotPasswordModal'
 
 
 class NavBar extends React.Component {
-    state={showLogin:false,showSignUp:false}
+    state={showLogin:false,showSignUp:false,showForgotPassword:false}
 
     onClickLogin=()=>{
         this.setState({showLogin:true})
@@ -31,6 +32,12 @@ class NavBar extends React.Component {
 
     loginfromSignUp=()=>{
         this.setState({showLogin:true,showSignUp:false})
+    }
+    onHideForgotPasswordModal=()=>{
+       this.setState({showForgotPassword:false});
+    }
+    forgotPasswordFromLogin=()=>{
+        this.setState({showLogin:false,showForgotPassword:true});
     }
     render() {
         return (
@@ -56,8 +63,9 @@ class NavBar extends React.Component {
                         </Nav>
                     <Button onClick={this.onClickLogin} style={{margin:'5px'}} variant="outline-success">Login</Button>
                     <Button onClick={this.onClickSignUp} style={{margin:'5px'}} variant="outline-success">SignUp</Button>
-                    <LogInModal signUpFromLogin={this.signUpOnLogin}  onHide={this.onHideLogin} show={this.state.showLogin}  ></LogInModal>
-                    <SignUpModal loginfromSignUp={this.loginfromSignUp}  onHide={this.onHideSignUp} show={this.state.showSignUp}  ></SignUpModal>
+                    <LogInModal forgotpasswordfromlogin={()=>{ this.setState({showLogin:false,showForgotPassword:true})}}  signupfromlogin={()=>{this.setState({showLogin:false,showSignUp:true})}}  onHide={this.onHideLogin} show={this.state.showLogin}  ></LogInModal>
+                    <SignUpModal loginfromsignUp={this.loginfromSignUp}  onHide={this.onHideSignUp} show={this.state.showSignUp}  ></SignUpModal>
+                    <ForgotPasswordModal onHide={this.onHideForgotPasswordModal} show={this.state.showForgotPassword}  ></ForgotPasswordModal>
                     </Navbar.Collapse>
                 </Navbar>
             </div>
