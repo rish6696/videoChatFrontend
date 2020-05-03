@@ -3,37 +3,39 @@ import { Modal, Button, Container, Row, Col, Form } from 'react-bootstrap'
 import GoogleButton from 'react-google-button'
 import GoogleLogin from 'react-google-login'
 import axios from 'axios'
+import { useState } from 'react'
+import { Redirect } from 'react-router-dom'
 import '../components/style.css'
 
 function LogInModal(props) {
     const { onHide, show, signupfromlogin, forgotpasswordfromlogin } = props
+    const [ redirect,setRedirect ]=useState(false);
+     
 
-    const onSignInGoogle = async () => {
-        console.log("clcicked")
-        try {
-
-            const { data } = await axios.get('http://192.168.0.105:5896/getAuth', {
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                crossdomain: true
-            })
-            window.open(data);
-        } catch (e) {
-            console.log(e);
-        }
+    const failure=(error)=>{
+        console.log(error)
     }
 
     const responseGoogle=(data)=>{
-        axios.post('http://192.168.0.105:5896/redirect',{code:data})
-        .then(x=>x.data)
+        axios.post('/v1/auth/loginGoogle',{code:data.code})
         .then(x=>{
-            console.log(x);
+            console.log(x.headers);
+            return x.data
+        })
+        .then(x=>{
+            console.log(x)
+           // localStorage.setItem('jwtToken',x.data.jwtToken)
+            setRedirect(true)
         })
         .catch(e=>{
             console.log(e)
         })
 
+    }
+    if(redirect){
+        return (
+            <Redirect to='/home' ></Redirect>
+        )
     }
     return (
         <Modal
@@ -55,11 +57,12 @@ function LogInModal(props) {
                             <GoogleLogin
                                 clientId="430706519339-mkihfr510279kro24vfmvc5o0ql69ovh.apps.googleusercontent.com"
                                 render={renderProps => (
-                                    <button onClick={renderProps.onClick} disabled={renderProps.disabled}>This is my custom Google button</button>
+                                   // <button onClick={renderProps.onClick} disabled={renderProps.disabled}>This is my custom Google button</button>
+                                    <GoogleButton style={{width:'100%'}} onClick={renderProps.onClick} disabled={renderProps.disabled}  ></GoogleButton>
                                 )}
                                 buttonText="Login"
                                 onSuccess={responseGoogle}
-                                onFailure={responseGoogle}
+                                onFailure={failure}
                                 cookiePolicy={'single_host_origin'}
                                 responseType='code'
                             />,
